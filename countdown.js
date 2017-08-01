@@ -1,11 +1,11 @@
 "use strict";
 //Countdown script for imitation limited proposition
-const countdown = document.getElementsByClassName('countdown');
+const countdown = document.getElementsByClassName('js-countdown');
 let countLength = countdown.length;
 let number = 83; //current quantity of product
 let numberStr = String(number);
-const minTimer = 5000,
-	maxTimer = 15000;
+const minTimer = 500,
+	maxTimer = 1500;
 if (!isNaN(parseInt(countdown[0].innerText))) {
 	number = countdown[0].innerText.trim();
 }
@@ -15,15 +15,24 @@ if (isStorage()) {
 		number = lastNumber;
 	}
 }
-function doCountdown(){
-	countLength = countdown.length;
-	number>5?--number:5;
-	number<=9?numberStr='0'+number:numberStr=String(number);
-	if (isStorage()) {localStorage.setItem("lastNumber", numberStr)}
+function updateCounters(){
+	number<=9?numberStr='0'+number:numberStr=number.toString();
 	while(countLength){
 		countdown[countLength-1].innerText = numberStr;
 		countLength--;
 	}
+	if (isStorage()) {localStorage.setItem("lastNumber", numberStr)};
+}
+updateCounters();
+function doCountdown(){
+	countLength = countdown.length;
+	if (number>5) {
+		--number;
+	}else{
+		clearInterval(timer);
+		return 5;
+	}
+	updateCounters();
 }
 function getRandomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
