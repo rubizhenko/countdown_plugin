@@ -1,41 +1,42 @@
 "use strict";
 //Countdown script for imitation limited proposition
-const countdown = document.getElementsByClassName('js-countdown');
+var countdown = document.getElementsByClassName('js-countdown');
 
 if (countdown.length != 0) {
-	let countLength = countdown.length;
-	let number = 83; //current quantity of product
-	let order = 2; //default length of product number string. For 06 products order=2; for 206 products order=3
-	let numberStr = String(number);
-	const minTimer = 1000,
-		maxTimer = 3000;
+	var countLength = countdown.length;
+	var number = 83; //current quantity of product
+	var order = 2; //default length of product number string. For 06 products order=2; for 206 products order=3
+	var numberStr = String(number);
+	var minTimer = 10000,
+		maxTimer = 60000;
 	if (!isNaN(parseInt(countdown[0].innerText)) && parseInt(countdown[0].innerText)>5) {
 		number = countdown[0].innerText.trim();
 	}
 	if (isStorage()) {
-		let lastNumber = parseInt(localStorage.getItem("lastNumber"));
+		var lastNumber = parseInt(localStorage.getItem("lastNumber"));
 		if (!isNaN(lastNumber)) {
 			number = lastNumber;
 		}
 	}
 	//pretify number of products. Add zeros before number.
-	function prettyNumber(number, order){
-		while(number.toString().length < order){
-			number = '0' + number;
+	function prettyNumber(num, order){
+		var numStr = num.toString();
+		while(numStr.length < order){
+			numStr = '0' + numStr;
 		}
-		return number.toString();
+		return numStr;
 	}
 	//function for updating counters
 	function updateCounters() {
 		while (countLength) {
-			let countDigits = countdown[countLength - 1].querySelectorAll('.js-count-digit');
-			let countDigitsLength = countDigits.length;
+			var countDigits = countdown[countLength - 1].querySelectorAll('.js-count-digit');
+			var countDigitsLength = countDigits.length;
 			if (countDigitsLength == 0) {
 				numberStr = prettyNumber(number, 2)
 				countdown[countLength - 1].innerText = numberStr;
 			} else {
 				numberStr = prettyNumber(number, countDigitsLength);
-				for(let i=0; i < countDigitsLength; i++){
+				for(var i=0; i < countDigitsLength; i++){
 					countDigits[i].innerText = numberStr[i];
 				}
 			}
@@ -67,7 +68,7 @@ if (countdown.length != 0) {
 			return false;
 		}
 	}
-	let timer = setInterval(doCountdown, getRandomInt(minTimer, maxTimer))
+	var timer = setInterval(doCountdown, getRandomInt(minTimer, maxTimer))
 } else {
 	console.warn("You have to add \"js-countdown\" class for any DOM element");
 }
