@@ -7,7 +7,7 @@ if (countdown.length != 0) {
 	let numberStr = String(number);
 	const minTimer = 500,
 		maxTimer = 1500;
-	if (!isNaN(parseInt(countdown[0].innerText))) {
+	if (!isNaN(parseInt(countdown[0].innerText)) && parseInt(countdown[0].innerText)>5) {
 		number = countdown[0].innerText.trim();
 	}
 	if (isStorage()) {
@@ -16,6 +16,7 @@ if (countdown.length != 0) {
 			number = lastNumber;
 		}
 	}
+
 	function updateCounters() {
 		number <= 9 ? numberStr = '0' + number : numberStr = number.toString();
 		while (countLength) {
