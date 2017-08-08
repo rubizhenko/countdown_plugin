@@ -1,12 +1,14 @@
 "use strict";
 //Countdown script for imitation limited proposition
 const countdown = document.getElementsByClassName('js-countdown');
+
 if (countdown.length != 0) {
 	let countLength = countdown.length;
 	let number = 83; //current quantity of product
+	let order = 2; //default length of product number string. For 06 products order=2; for 206 products order=3
 	let numberStr = String(number);
-	const minTimer = 500,
-		maxTimer = 1500;
+	const minTimer = 1000,
+		maxTimer = 3000;
 	if (!isNaN(parseInt(countdown[0].innerText)) && parseInt(countdown[0].innerText)>5) {
 		number = countdown[0].innerText.trim();
 	}
@@ -16,17 +18,33 @@ if (countdown.length != 0) {
 			number = lastNumber;
 		}
 	}
-
+	//pretify number of products. Add zeros before number.
+	function prettyNumber(number, order){
+		while(number.toString().length < order){
+			number = '0' + number;
+		}
+		return number.toString();
+	}
+	//function for updating counters
 	function updateCounters() {
-		number <= 9 ? numberStr = '0' + number : numberStr = number.toString();
 		while (countLength) {
-			countdown[countLength - 1].innerText = numberStr;
+			let countDigits = countdown[countLength - 1].querySelectorAll('.js-count-digit');
+			let countDigitsLength = countDigits.length;
+			if (countDigitsLength == 0) {
+				numberStr = prettyNumber(number, 2)
+				countdown[countLength - 1].innerText = numberStr;
+			} else {
+				numberStr = prettyNumber(number, countDigitsLength);
+				for(let i=0; i < countDigitsLength; i++){
+					countDigits[i].innerText = numberStr[i];
+				}
+			}
 			countLength--;
 		}
 		if (isStorage()) { localStorage.setItem("lastNumber", numberStr) };
 	}
 	updateCounters();
-
+	//do coundown iteration
 	function doCountdown() {
 		countLength = countdown.length;
 		if (number > 5) {
@@ -37,7 +55,7 @@ if (countdown.length != 0) {
 		}
 		updateCounters();
 	}
-
+	//get random int from custom interval
 	function getRandomInt(min, max) {
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
